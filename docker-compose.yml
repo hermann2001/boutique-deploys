@@ -1,0 +1,51 @@
+services:
+    db:
+        image: postgres:latest
+        restart: unless-stopped
+        env_file: ./.env
+        environment:
+            POSTGRES_USER: $DB_USERNAME
+            POSTGRES_PASSWORD: $DB_PASSWORD
+            POSTGRES_DB: $DB_DATABASE
+        volumes:
+            - pgdata:/var/lib/postgresql/data
+        networks:
+            - btq_deploys
+
+    adminer:
+        image: adminer
+        restart: always
+        ports:
+            - 15022:8080
+        networks:
+            - btq_deploys
+
+    app:
+        depends_on:
+            - db
+        command: sh -c "./scripts/waitforit.sh db:5432; php artisan migrate && php artisan serve --host=0.0.0.0 --port=15023"
+        # command: sh -c "./scripts/waitforit.sh db:5432; php artisan migrate --seed && php artisan serve --host=0.0.0.0 --port=15023"
+        build:
+            context: .
+            dockerfile: Dockerfile
+        restart: on-failure
+        env_file: ./.env
+        ports:
+            - 15000:15023
+        environment:
+            - DB_HOST=$DB_HOST
+            - DB_USER=$DB_USERNAME
+            - DB_PASSWORD=$DB_PASSWORD
+            - DB_NAME=$DB_DATABASE
+            - DB_PORT=$DB_PORT
+        volumes:
+            - .:/var/www/html
+        networks:
+            - btq_deploys
+
+networks:
+    btq_deploys:
+
+
+volumes:
+    pgdata:
