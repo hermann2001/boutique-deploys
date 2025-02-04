@@ -48,6 +48,7 @@ class BoutiqueController extends Controller
     public function viewBoutique($btq): RedirectResponse|View
     {
         $boutique = Shop::where('name', $btq)->first();
+
         if (!$boutique) {
             abort(404);
         }

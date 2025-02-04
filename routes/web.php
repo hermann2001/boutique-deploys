@@ -31,7 +31,8 @@ Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('
 // Routes concernant les boutiques
 Route::get('/create-boutique', [BoutiqueController::class, 'viewCreateBoutique'])->name('createBtq');
 Route::post('/create-boutique', [BoutiqueController::class, 'createBoutique'])->name('createBtq');
+Route::get('/{btq}', [BoutiqueController::class, 'viewBoutique']);
 
-Route::domain('{shop}.domain.xxx')->group(function () {
-    Route::get('/', [BoutiqueController::class, 'viewBoutique']);
-});
+// Route::domain('{shop}.boutique-deploys.onrender.com')->group(function () {
+//     Route::get('/', [BoutiqueController::class, 'viewBoutique']);
+// });

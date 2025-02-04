@@ -36,7 +36,7 @@
                         @if (isset($successCreateBtq))
                             <div class="alert alert-success text-center">
                                 Boutique créée avec success ! Allez sur le lien
-                                <a href="https://{{ $btqName }}.domain.xxx"
+                                <a href="{{ env('APP_URL') . '/' . $btqName }}"
                                     target="_blank">{{ $btqName }}.domain.xxx</a> pour acéder à la boutique.
                             </div>
                         @endif
